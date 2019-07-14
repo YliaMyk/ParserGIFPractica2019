@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-
+# В данном файле используется библиотека из этого профиля https://github.com/robert-ancell/pygif/blob/master/gif.py
 # Copyright 2018 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it under
@@ -31,7 +30,7 @@ __all__      = [ 'AnimationExtension',
                  'Reader',
                  'Trailer',
                  'UnknownBlock',
-                 'Version'
+                 'Version',
                  'Writer',
                  'XMPDataExtension' ]
 
