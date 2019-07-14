@@ -7,7 +7,6 @@ import math
 
 s = bmp.Bmp(2, 2)
 s.read_from_file('abc.bmp')
-print(vars(s))
 s.write_to_file('cba.bmp')
 
 # Пример 2: Создаем bmp
@@ -19,7 +18,7 @@ for i in range(height):
    for j in range(width):
         if i == j:
             c.set_pixel(i, j, (0, 0, 150))
-c.set_pixel(4, 3, (0, 150, 0))
+c.set_pixel(0, 0, (0, 150, 0))
 c.write_to_file('artificial.bmp')
 
 # Пример 3: Создаем анимированную гифку
@@ -50,12 +49,9 @@ file = open ('animation.gif', 'rb')
 reader = gif.Reader ()
 reader.feed(file.read ())
 if reader.has_screen_descriptor ():
-    print ('Size: %dx%d' % (reader.width, reader.height))
-    print ('Colors: %s' % repr (reader.color_table))
     for block in reader.blocks:
         if isinstance (block, gif.Image):
             ppp = block.get_pixels ()
-            print ('Pixels: %s' % repr (ppp))
     if reader.has_unknown_block ():
         print ('Encountered unknown block')
     elif not reader.is_complete ():
@@ -64,7 +60,7 @@ else:
     print ('Not a valid GIF file')
 
 
-def make_gif (name, width, height,
+def make_gif(name, width, height,
               colors = [], background_color = 0,
               version = gif.Version.GIF89a,
               loop_count = 0, force_animation = False,
@@ -95,5 +91,15 @@ writer.write_graphic_control_extension (delay_time = 50)
 writer.write_image (4, 4, 1, [BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK ,BLACK, BLACK, BLACK ,BLACK, BLACK, RED ,BLACK, BLACK, BLACK ])
 writer.write_trailer ()
 
+# Пример 4: Раскладываем гифку на несколько картинок bmp формата
 
+gif_with_bmp.gif_to_bmp('Yoda.gif')
 
+# После выполнения верхнего примера в папке появятся 5 файлов с названиям test0.bmp - test4.bmp
+
+# Пример 5: Собираем гифку обратно. Для этого создадим лист с названиями файлов из которых будем собирать.
+
+list_of_files = ['test0.bmp', 'test1.bmp', 'test2.bmp']
+gif_with_bmp.bmp_to_gif(list_of_files)
+
+# Итоговая гифка лежит под названием test.gif
