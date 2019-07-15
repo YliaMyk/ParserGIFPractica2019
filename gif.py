@@ -227,8 +227,8 @@ class Reader:
         self.color_table = []
         self.blocks = []
 
-    def feed (self, data):
-        old_len = len (self.buffer)
+    def feed(self, data):
+        old_len = len(self.buffer)
         self.buffer += data
 
         if old_len < 6 and len (self.buffer) >= 6:
