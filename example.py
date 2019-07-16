@@ -2,6 +2,7 @@ import gif_with_bmp
 import bmp
 import gif
 import math
+import myGif
 
 # Пример 1: Считываем тестовый файл, созданый в Paint, и записываем получившиеся данные в другой файл
 
@@ -103,3 +104,9 @@ list_of_files = ['test0.bmp', 'test1.bmp', 'test2.bmp']
 gif_with_bmp.bmp_to_gif(list_of_files)
 
 # Итоговая гифка лежит под названием test.gif
+
+# Пример 6: Раскладываю гифку моей библиотекой. После выполнения в файле появятся test1_0.bmp- test1_n.bmp
+s = myGif.Gif()
+s.read_from_file('Yoda.gif')
+
+
