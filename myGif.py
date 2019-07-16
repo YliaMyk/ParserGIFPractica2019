@@ -117,19 +117,15 @@ class Gif:
         self.size_color = for_flags & 7
         self.sreen_coolor = self.gif_arr[11]
         self.r = self.gif_arr[12]
-        # print(self.ct, self.color, self.sf, self.size_color, self.sreen_coolor, self.r)
         array_shift = 13
         if self.ct:
             n = 2 ** (self.size_color + 1)
             self.global_color_table = [0 * i for i in range(n)]
-            #print(len(self.global_color_table))
             for i in range(n):
                 offset = 13 + i * 3
                 (red, green, blue) = struct.unpack('BBB', self.gif_arr[offset: offset + 3])
                 self.global_color_table[i] = (blue, green, red)
-            #print(self.global_color_table)
             array_shift = 13 + n * 3
-        #print(array_shift)
 
         num_of_img = 0
 
@@ -138,47 +134,36 @@ class Gif:
 
             if block_type == 0x21: #EXTENSION
                 start_of_subblock = array_shift + 2
-                #print(start_of_subblock, self.gif_arr[start_of_subblock])
                 while self.gif_arr[start_of_subblock] != 0:
                     start_of_subblock += self.gif_arr[start_of_subblock] + 1
-                    #print(start_of_subblock, self.gif_arr[start_of_subblock])
                 array_shift = start_of_subblock + 1
             elif block_type == 0x2c: #IMAGE
                 width = struct.unpack('H', self.gif_arr[array_shift + 5:array_shift + 7])[0]
                 height = struct.unpack('H', self.gif_arr[array_shift + 7:array_shift + 9])[0]
-                #print('imag', width, height)
                 for_flags = self.gif_arr[array_shift + 9]
                 ct = (for_flags >> 7) & 1
                 if ct != 0:
                     local_pallete = []
                     colors = 1 << ((for_flags & 7) + 1)
-                    # print('local_pallete ', for_flags & 7, colors)
                     for i in range(colors):
                         (red, green, blue) = struct.unpack('BBB', self.gif_arr[array_shift+10 + 3 * i : array_shift + 10 + 3 * i + 3])
                         local_pallete.append((blue, green, red))
-                    # print(len(local_pallete))
                     array_shift += 3 * colors
 
                 mc = self.gif_arr[array_shift + 10] # начальный размер LZV кода
                 size_of_block = self.gif_arr[array_shift + 11]
-                #print(mc)
-                #start_of_subblock = array_shift + 2
                 array_shift += 12
                 decoder = LZWDecoder(mc + 1)
 
                 while size_of_block > 0:
-                    #print (array_shift, size_of_block)
                     decoder.feed(self.gif_arr, array_shift, size_of_block)
                     array_shift += size_of_block
                     size_of_block = self.gif_arr[array_shift]
                     array_shift += 1
-
-
                 _bmp = bmp.Bmp(height,width)
 
                 for i in range(height):
                     for j in range(width):
-                        #print(i, j,(height - i - 1) * width + j,  width * i + j)
                         _bmp.graphics[(height - i - 1) * width + j] = self.global_color_table[decoder.values[width * i + j]]
 
 
@@ -190,8 +175,7 @@ class Gif:
                 break
 
 def main():
-    s = Gif()
-    s.read_from_file('Yoda.gif')
+    print('Тесты находятся в example.py')
 
 
 if __name__ == "__main__":
